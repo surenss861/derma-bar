@@ -141,8 +141,9 @@ export default function Hero() {
       const vignette = sectionRef.current?.querySelector('.vignette')
       if (vignette) {
         gsap.to(vignette, {
-          opacity: [0.6, 0.8, 0.6],
-          duration: 4,
+          opacity: 0.8,
+          duration: 2,
+          yoyo: true,
           repeat: -1,
           ease: 'sine.inOut',
         })
