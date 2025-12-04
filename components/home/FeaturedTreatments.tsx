@@ -136,8 +136,9 @@ export default function FeaturedTreatments() {
     
     const ctx = gsap.context(() => {
       if (titleRef.current && sectionRef.current) {
+        gsap.set(titleRef.current, { opacity: 1 })
         gsap.from(titleRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 40,
           scale: 0.95,
           duration: 0.8,

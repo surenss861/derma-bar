@@ -23,10 +23,11 @@ export default function FounderIntro() {
     if (!sectionRef.current) return
     
     const ctx = gsap.context(() => {
-      // Section fade in with scale
+      // Section fade in with scale - ensure it's visible first
       if (sectionRef.current) {
+        gsap.set(sectionRef.current, { opacity: 1 })
         gsap.from(sectionRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 60,
           scale: 0.98,
           duration: 1.2,
@@ -41,8 +42,9 @@ export default function FounderIntro() {
 
       // Welcome text animation with underline reveal
       if (welcomeRef.current) {
+        gsap.set(welcomeRef.current, { opacity: 1 })
         gsap.from(welcomeRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 30,
           duration: 1,
           delay: 0.3,
@@ -57,8 +59,9 @@ export default function FounderIntro() {
 
       // Title animation with enhanced effects
       if (titleRef.current) {
+        gsap.set(titleRef.current, { opacity: 1 })
         gsap.from(titleRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 40,
           scale: 0.96,
           duration: 1.2,
@@ -91,8 +94,9 @@ export default function FounderIntro() {
       const paragraphs = paragraphsRef.current?.children
       if (paragraphs) {
         Array.from(paragraphs).forEach((para, paraIndex) => {
+          gsap.set(para, { opacity: 1 })
           gsap.from(para, {
-            opacity: 0,
+            opacity: 0.3,
             y: 25,
             duration: 0.9,
             stagger: 0.15,

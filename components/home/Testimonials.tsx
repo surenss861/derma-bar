@@ -60,21 +60,24 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Enhanced card entrance
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 60,
-        scale: 0.92,
-        rotation: -1,
-        duration: 1,
-        delay: index * 0.15,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
+      // Enhanced card entrance - ensure visible first
+      if (cardRef.current) {
+        gsap.set(cardRef.current, { opacity: 1 })
+        gsap.from(cardRef.current, {
+          opacity: 0.3,
+          y: 60,
+          scale: 0.92,
+          rotation: -1,
+          duration: 1,
+          delay: index * 0.15,
+          ease: 'back.out(1.6)',
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
 
       // Quote icon animation
       if (quoteRef.current) {
@@ -188,8 +191,9 @@ export default function Testimonials() {
     const ctx = gsap.context(() => {
       // Enhanced title animation
       if (titleRef.current && sectionRef.current) {
+        gsap.set(titleRef.current, { opacity: 1 })
         gsap.from(titleRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 50,
           scale: 0.94,
           duration: 1.2,
