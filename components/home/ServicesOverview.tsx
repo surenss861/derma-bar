@@ -63,21 +63,24 @@ function ServiceCard({ service, index }: ServiceCardProps) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Enhanced card entrance
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 80,
-        scale: 0.92,
-        rotation: -2,
-        duration: 1.2,
-        delay: index * 0.12,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
+      // Enhanced card entrance - ensure visible first
+      if (cardRef.current) {
+        gsap.set(cardRef.current, { opacity: 1 })
+        gsap.from(cardRef.current, {
+          opacity: 0.3,
+          y: 80,
+          scale: 0.92,
+          rotation: -2,
+          duration: 1.2,
+          delay: index * 0.12,
+          ease: 'back.out(1.6)',
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
 
       // Image reveal with enhanced effect
       if (imageRef.current) {
@@ -98,8 +101,11 @@ function ServiceCard({ service, index }: ServiceCardProps) {
 
       // Content fade in
       if (contentRef.current) {
+        Array.from(contentRef.current.children).forEach((child) => {
+          gsap.set(child, { opacity: 1 })
+        })
         gsap.from(contentRef.current.children, {
-          opacity: 0,
+          opacity: 0.3,
           y: 20,
           duration: 0.8,
           stagger: 0.1,

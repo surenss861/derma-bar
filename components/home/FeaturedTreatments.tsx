@@ -44,19 +44,23 @@ function TreatmentCard({ treatment, index }: { treatment: typeof featuredTreatme
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 50,
-        scale: 0.95,
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
+      // Enhanced card entrance - ensure visible first
+      if (cardRef.current) {
+        gsap.set(cardRef.current, { opacity: 1 })
+        gsap.from(cardRef.current, {
+          opacity: 0.3,
+          y: 50,
+          scale: 0.95,
+          duration: 0.8,
+          delay: index * 0.15,
+          ease: 'back.out(1.6)',
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
     }, cardRef)
 
     return () => ctx.revert()
