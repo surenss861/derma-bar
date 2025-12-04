@@ -108,7 +108,9 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
       <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-white/0 group-hover:border-white/30 transition-all duration-500"></div>
       <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-white/0 group-hover:border-white/30 transition-all duration-500"></div>
       
-      <Quote ref={quoteRef} className="absolute top-7 right-7 h-10 w-10 text-white/8 group-hover:text-white/25 transition-all duration-500" />
+      <div ref={quoteRef} className="absolute top-7 right-7">
+        <Quote className="h-10 w-10 text-white/8 group-hover:text-white/25 transition-all duration-500" />
+      </div>
       
       {/* Enhanced Stars */}
       <div className="flex items-center gap-1 mb-5">
