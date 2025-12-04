@@ -169,7 +169,7 @@ export default function FounderIntro() {
           {/* Welcome Text with enhanced styling */}
           <motion.div
             ref={welcomeRef}
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="mb-10"
@@ -183,10 +183,10 @@ export default function FounderIntro() {
           <div className="mb-12">
             <motion.h1
               ref={titleRef}
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase tracking-tight mb-4 leading-[0.95]"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black uppercase tracking-tight mb-4 leading-[0.95] text-white"
               style={{
                 fontFamily: 'var(--font-inter)',
                 fontWeight: 900,

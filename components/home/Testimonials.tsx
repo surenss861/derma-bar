@@ -260,12 +260,12 @@ export default function Testimonials() {
         {/* Enhanced Title */}
         <motion.div
           ref={titleRef}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight mb-6">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight mb-6 text-white">
             TESTIMONIALS
           </h2>
           <motion.div
@@ -285,7 +285,7 @@ export default function Testimonials() {
         {/* Enhanced CTA */}
         <motion.div
           ref={ctaRef}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center"

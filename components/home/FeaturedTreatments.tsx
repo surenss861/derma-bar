@@ -170,12 +170,12 @@ export default function FeaturedTreatments() {
       <div className="container-custom section-padding relative z-10">
         <motion.div
           ref={titleRef}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight mb-6">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight mb-6 text-white">
             Featured Treatments
           </h2>
           <motion.div
