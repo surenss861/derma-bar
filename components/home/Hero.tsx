@@ -163,6 +163,10 @@ export default function Hero() {
           className="object-cover"
           priority
           quality={95}
+          unoptimized={false}
+          onError={(e) => {
+            console.error('Hero image failed to load:', e)
+          }}
         />
         {/* Multi-layer dark overlay with sophisticated gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/88 to-black/95"></div>

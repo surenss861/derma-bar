@@ -139,6 +139,10 @@ export default function TrainingPreview() {
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               quality={95}
+              unoptimized={false}
+              onError={(e) => {
+                console.error('Training image failed to load:', e)
+              }}
             />
             {/* Multi-layer gradients */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20"></div>
