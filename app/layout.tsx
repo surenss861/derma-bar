@@ -85,11 +85,106 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // LocalBusiness Schema for SEO
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HealthAndBeautyBusiness',
+    name: 'Derma Bar™',
+    alternateName: 'Dermabar Med Spa',
+    url: 'https://dermabar.ca',
+    logo: 'https://dermabar.ca/Derma+Bar+Logo-156w.webp',
+    image: 'https://dermabar.ca/Derma+Bar+Logo-156w.webp',
+    description: 'Premier medical aesthetic clinic in Toronto offering expert injectables, laser treatments, and professional skincare.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '2145 Danforth Ave',
+      addressLocality: 'Toronto',
+      addressRegion: 'ON',
+      postalCode: 'M4C 1K1',
+      addressCountry: 'CA',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 43.6886,
+      longitude: -79.3044,
+    },
+    telephone: '+1-416-555-0123',
+    email: 'info@dermabar.ca',
+    priceRange: '$$',
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '10:00',
+        closes: '19:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Saturday',
+        opens: '09:00',
+        closes: '17:00',
+      },
+    ],
+    areaServed: {
+      '@type': 'City',
+      name: 'Toronto',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Medical Aesthetic Services',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Botox Injections',
+            description: 'Expert Botox treatments for wrinkle reduction',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Dermal Fillers',
+            description: 'Facial volume restoration with dermal fillers',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Laser Treatments',
+            description: 'Advanced laser hair removal and skin resurfacing',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'HydraFacial',
+            description: 'Professional HydraFacial treatments for glowing skin',
+          },
+        },
+      ],
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '500',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  }
+
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
       </head>
       <body className="min-h-screen flex flex-col">
         <AnnouncementBar />

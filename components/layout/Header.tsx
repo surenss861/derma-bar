@@ -4,24 +4,26 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Phone, ChevronDown, Sparkles, Syringe, Waves, Zap } from 'lucide-react'
+import { Menu, X, Search, ShoppingCart, ChevronDown, Facebook, Instagram } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 
 const navigation = [
   { 
-    name: 'Services', 
+    name: 'SERVICES', 
     href: '/services',
     dropdown: [
-      { name: 'Injectables', href: '/services/injectables', icon: Syringe, description: 'Botox & Fillers' },
-      { name: 'Skin Treatments', href: '/services/skin', icon: Sparkles, description: 'Facials & Peels' },
-      { name: 'Body Contouring', href: '/services/body', icon: Waves, description: 'Sculpt & Tone' },
-      { name: 'Laser Treatments', href: '/services/laser', icon: Zap, description: 'Hair Removal & Resurfacing' },
+      { name: 'Injectables', href: '/services/injectables' },
+      { name: 'Skin Treatments', href: '/services/skin' },
+      { name: 'Body Contouring', href: '/services/body' },
+      { name: 'Laser Treatments', href: '/services/laser' },
     ]
   },
-  { name: 'About', href: '/about' },
-  { name: 'Gallery', href: '/gallery' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'SHOP', href: '/shop' },
+  { name: 'TRAINING', href: '/training' },
+  { name: 'ABOUT', href: '/about' },
+  { name: 'REVIEWS', href: '/reviews' },
+  { name: 'CONTACT', href: '/contact' },
 ]
 
 export default function Header() {
@@ -30,30 +32,22 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const headerRef = useRef<HTMLElement>(null)
-  const logoRef = useRef<HTMLAnchorElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 20
+      const isScrolled = window.scrollY > 50
       setScrolled(isScrolled)
       
-      // Shrink header on scroll
       if (headerRef.current) {
         gsap.to(headerRef.current, {
-          height: isScrolled ? '70px' : '96px',
-          duration: 0.3,
+          backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.98)' : 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: isScrolled ? 'blur(24px)' : 'blur(12px)',
+          borderBottomWidth: isScrolled ? '1px' : '1px',
+          duration: 0.4,
           ease: 'power2.out',
         })
-        
-        // Shrink logo
-        if (logoRef.current) {
-          gsap.to(logoRef.current, {
-            scale: isScrolled ? 0.85 : 1,
-            duration: 0.3,
-            ease: 'power2.out',
-          })
-        }
       }
     }
     window.addEventListener('scroll', handleScroll)
@@ -61,31 +55,17 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    // Logo entrance animation
+    // Logo entrance
     if (logoRef.current) {
       gsap.from(logoRef.current, {
         opacity: 0,
-        x: -20,
+        scale: 0.8,
         duration: 0.8,
-        ease: 'power3.out',
-      })
-    }
-
-    // Nav links animation
-    const navLinks = headerRef.current?.querySelectorAll('.nav-link')
-    if (navLinks) {
-      gsap.from(navLinks, {
-        opacity: 0,
-        y: -10,
-        duration: 0.6,
-        stagger: 0.1,
-        delay: 0.3,
-        ease: 'power2.out',
+        ease: 'back.out(1.7)',
       })
     }
   }, [])
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -103,42 +83,56 @@ export default function Header() {
   }, [servicesDropdownOpen])
 
   const isActive = (href: string) => {
-    if (href === '/') {
-      return pathname === '/'
-    }
+    if (href === '/') return pathname === '/'
     return pathname?.startsWith(href)
   }
 
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-white/98 backdrop-blur-lg shadow-md'
-          : 'bg-white/90 backdrop-blur-md'
-      }`}
-      style={{ height: scrolled ? '70px' : '96px' }}
+      className="fixed top-0 left-0 right-0 z-50 bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
     >
-      <nav className="container-custom section-padding h-full" aria-label="Global">
-        <div className="flex items-center justify-between h-full">
-          {/* Logo */}
-          <div className="flex lg:flex-1">
-            <Link ref={logoRef} href="/" className="-m-1.5 p-1.5 group relative">
-              <span className="sr-only">Dermabar Med Spa</span>
-              <Image
-                src="/Derma+Bar+Logo-156w.webp"
-                alt="Dermabar Med Spa Logo"
-                width={156}
-                height={60}
-                className="h-12 w-auto lg:h-16 transition-transform duration-300 group-hover:scale-105"
-                priority
-              />
-            </Link>
+      <nav className="container-custom section-padding" aria-label="Global">
+        <div className="flex items-center justify-between h-20 lg:h-24">
+          {/* Social Media Icons */}
+          <div className="hidden lg:flex items-center gap-4">
+            <motion.a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              <Facebook className="h-5 w-5" />
+            </motion.a>
+            <motion.a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              <Instagram className="h-5 w-5" />
+            </motion.a>
+            <motion.a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </motion.a>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-1">
-            {navigation.map((item) => (
+          <div className="hidden lg:flex lg:items-center lg:gap-x-1 flex-1 justify-center">
+            {navigation.map((item, index) => (
               <div
                 key={item.name}
                 className="relative"
@@ -148,27 +142,26 @@ export default function Header() {
                 {item.dropdown ? (
                   <>
                     <button
-                      className={`nav-link flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative group ${
+                      className={`px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 relative group ${
                         isActive(item.href)
-                          ? 'text-primary-600'
-                          : 'text-gray-700 hover:text-primary-600'
+                          ? 'text-white'
+                          : 'text-white/80 hover:text-white'
                       }`}
                     >
                       {item.name}
                       <ChevronDown
-                        className={`h-4 w-4 transition-transform duration-300 ${
+                        className={`inline-block ml-1 h-4 w-4 transition-transform duration-300 ${
                           servicesDropdownOpen ? 'rotate-180' : ''
                         }`}
                       />
                       <motion.span
-                        className="absolute bottom-0 left-0 h-0.5 bg-primary-600"
+                        className="absolute bottom-0 left-0 h-0.5 bg-white"
                         initial={{ width: 0 }}
                         animate={{ width: isActive(item.href) ? '100%' : 0 }}
                         transition={{ duration: 0.3 }}
                       />
                     </button>
 
-                    {/* Dropdown Menu */}
                     <AnimatePresence>
                       {servicesDropdownOpen && (
                         <motion.div
@@ -177,27 +170,17 @@ export default function Header() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
+                          className="absolute top-full left-0 mt-2 w-64 bg-black/95 backdrop-blur-xl rounded-lg border border-white/10 shadow-2xl overflow-hidden"
                         >
                           <div className="p-2">
                             {item.dropdown.map((subItem) => (
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
-                                className="flex items-start gap-3 p-3 rounded-xl hover:bg-primary-50 transition-all duration-200 group"
+                                className="block px-4 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
                                 onClick={() => setServicesDropdownOpen(false)}
                               >
-                                <div className="flex-shrink-0 mt-1 p-2 rounded-lg bg-primary-50 text-primary-600 group-hover:bg-primary-100 transition-colors">
-                                  <subItem.icon className="h-5 w-5" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
-                                    {subItem.name}
-                                  </p>
-                                  <p className="text-xs text-gray-500 mt-0.5">
-                                    {subItem.description}
-                                  </p>
-                                </div>
+                                {subItem.name}
                               </Link>
                             ))}
                           </div>
@@ -208,15 +191,15 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`nav-link px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative group ${
+                    className={`px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 relative group ${
                       isActive(item.href)
-                        ? 'text-primary-600'
-                        : 'text-gray-700 hover:text-primary-600'
+                        ? 'text-white'
+                        : 'text-white/80 hover:text-white'
                     }`}
                   >
                     {item.name}
                     <motion.span
-                      className="absolute bottom-0 left-0 h-0.5 bg-primary-600"
+                      className="absolute bottom-0 left-0 h-0.5 bg-white"
                       initial={{ width: 0 }}
                       animate={{ width: isActive(item.href) ? '100%' : 0 }}
                       whileHover={{ width: '100%' }}
@@ -228,23 +211,46 @@ export default function Header() {
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-4">
-            <motion.a
-              href="tel:+1416-555-0123"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors group"
-              whileHover={{ scale: 1.05 }}
+          {/* Enhanced Logo - Centered */}
+          <div ref={logoRef} className="absolute left-1/2 transform -translate-x-1/2">
+            <Link href="/" className="group">
+              <span className="text-xl lg:text-2xl font-black text-white tracking-tight group-hover:opacity-90 transition-all duration-300 relative">
+                DERMA BAR™
+                <motion.span
+                  className="absolute -bottom-1 left-0 h-0.5 bg-white"
+                  initial={{ width: 0 }}
+                  whileHover={{ width: '100%' }}
+                  transition={{ duration: 0.3 }}
+                />
+              </span>
+            </Link>
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="hidden lg:flex lg:items-center lg:gap-x-4 ml-auto">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="text-white/80 hover:text-white transition-colors"
+              aria-label="Search"
             >
-              <Phone className="h-4 w-4 group-hover:rotate-12 transition-transform" />
-              <span>(416) 555-0123</span>
-            </motion.a>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Search className="h-5 w-5" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="text-white/80 hover:text-white transition-colors relative"
+              aria-label="Shopping Cart"
+            >
+              <ShoppingCart className="h-5 w-5" />
+            </motion.button>
+            <motion.div whileHover={{ scale: 1.05, y: -1 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/book"
-                className="relative inline-flex items-center justify-center rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-primary-700 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-300 overflow-hidden group"
+                className="group relative inline-flex items-center justify-center bg-black px-7 py-3 text-sm font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-500 border-2 border-white/30 hover:border-white overflow-hidden"
               >
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                   animate={{
                     x: ['-100%', '100%'],
                   }}
@@ -264,11 +270,10 @@ export default function Header() {
           <div className="flex lg:hidden">
             <motion.button
               type="button"
-              className="-m-2.5 inline-flex items-center justify-center rounded-lg p-2.5 text-gray-700 hover:bg-gray-100 transition-colors"
+              className="text-white p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <span className="sr-only">Open main menu</span>
               <AnimatePresence mode="wait">
                 {mobileMenuOpen ? (
                   <motion.div
@@ -276,9 +281,8 @@ export default function Header() {
                     initial={{ rotate: -90, opacity: 0 }}
                     animate={{ rotate: 0, opacity: 1 }}
                     exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
                   >
-                    <X className="h-6 w-6" aria-hidden="true" />
+                    <X className="h-6 w-6" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -286,9 +290,8 @@ export default function Header() {
                     initial={{ rotate: 90, opacity: 0 }}
                     animate={{ rotate: 0, opacity: 1 }}
                     exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
                   >
-                    <Menu className="h-6 w-6" aria-hidden="true" />
+                    <Menu className="h-6 w-6" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -303,10 +306,9 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden"
+              className="lg:hidden overflow-hidden border-t border-white/10"
             >
-              <div className="px-2 pt-2 pb-4 space-y-1 border-t border-gray-200 mt-2">
+              <div className="px-2 pt-4 pb-4 space-y-1">
                 {navigation.map((item, index) => (
                   <motion.div
                     key={item.name}
@@ -318,15 +320,15 @@ export default function Header() {
                       <div>
                         <button
                           onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
-                          className={`w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-base font-medium transition-colors ${
+                          className={`w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold uppercase tracking-wider transition-colors ${
                             isActive(item.href)
-                              ? 'bg-primary-50 text-primary-600'
-                              : 'text-gray-700 hover:bg-gray-50'
+                              ? 'text-white bg-white/5'
+                              : 'text-white/80 hover:text-white hover:bg-white/5'
                           }`}
                         >
                           {item.name}
                           <ChevronDown
-                            className={`h-5 w-5 transition-transform duration-300 ${
+                            className={`h-4 w-4 transition-transform duration-300 ${
                               servicesDropdownOpen ? 'rotate-180' : ''
                             }`}
                           />
@@ -337,21 +339,19 @@ export default function Header() {
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: 'auto', opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
                               className="overflow-hidden pl-4 mt-1"
                             >
                               {item.dropdown.map((subItem) => (
                                 <Link
                                   key={subItem.name}
                                   href={subItem.href}
-                                  className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm text-gray-600 hover:bg-gray-50 hover:text-primary-600 transition-colors"
+                                  className="block py-2.5 px-3 text-sm text-white/70 hover:text-white transition-colors"
                                   onClick={() => {
                                     setMobileMenuOpen(false)
                                     setServicesDropdownOpen(false)
                                   }}
                                 >
-                                  <subItem.icon className="h-4 w-4" />
-                                  <span>{subItem.name}</span>
+                                  {subItem.name}
                                 </Link>
                               ))}
                             </motion.div>
@@ -361,10 +361,10 @@ export default function Header() {
                     ) : (
                       <Link
                         href={item.href}
-                        className={`block rounded-lg px-3 py-2.5 text-base font-medium transition-colors ${
+                        className={`block px-3 py-2.5 text-sm font-semibold uppercase tracking-wider transition-colors ${
                           isActive(item.href)
-                            ? 'bg-primary-50 text-primary-600'
-                            : 'text-gray-700 hover:bg-gray-50'
+                            ? 'text-white bg-white/5'
+                            : 'text-white/80 hover:text-white hover:bg-white/5'
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
@@ -373,31 +373,14 @@ export default function Header() {
                     )}
                   </motion.div>
                 ))}
-                <div className="pt-4 mt-4 border-t border-gray-200 space-y-2">
-                  <motion.a
-                    href="tel:+1416-555-0123"
-                    className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                <div className="pt-4 mt-4 border-t border-white/10 space-y-2">
+                  <Link
+                    href="/book"
+                    className="block w-full bg-black px-3 py-2.5 text-center text-sm font-semibold text-white uppercase tracking-wider border border-white/20 hover:bg-gray-900 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: navigation.length * 0.1 }}
                   >
-                    <Phone className="h-5 w-5" />
-                    <span>(416) 555-0123</span>
-                  </motion.a>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: navigation.length * 0.1 + 0.1 }}
-                  >
-                    <Link
-                      href="/book"
-                      className="block w-full rounded-lg bg-primary-600 px-3 py-2.5 text-center text-base font-semibold text-white hover:bg-primary-700 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Book Appointment
-                    </Link>
-                  </motion.div>
+                    Book Appointment
+                  </Link>
                 </div>
               </div>
             </motion.div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Award, Shield, Users, Sparkles } from 'lucide-react'
+import { Award, Shield, Users, Sparkles, Star, CheckCircle } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -33,20 +33,26 @@ const signals = [
   },
 ]
 
+const pressMentions = [
+  { name: 'Vanity Fair', logo: 'VF' },
+  { name: 'Allure', logo: 'A' },
+  { name: 'Vogue', logo: 'V' },
+]
+
 function SignalCard({ signal, index }: { signal: typeof signals[0]; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const iconRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Card animation
+      // Card animation - optimized to 200-300ms
       gsap.from(cardRef.current, {
         opacity: 0,
-        y: 30,
-        scale: 0.8,
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: 'back.out(1.7)',
+        y: 20,
+        scale: 0.95,
+        duration: 0.3,
+        delay: index * 0.1,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: cardRef.current,
           start: 'top 85%',
@@ -54,13 +60,13 @@ function SignalCard({ signal, index }: { signal: typeof signals[0]; index: numbe
         },
       })
 
-      // Icon rotation animation
+      // Icon animation - optimized
       gsap.from(iconRef.current, {
-        rotation: -180,
-        scale: 0,
-        duration: 0.6,
-        delay: index * 0.15 + 0.2,
-        ease: 'back.out(2)',
+        rotation: -90,
+        scale: 0.8,
+        duration: 0.25,
+        delay: index * 0.1 + 0.1,
+        ease: 'back.out(1.5)',
         scrollTrigger: {
           trigger: cardRef.current,
           start: 'top 85%',
@@ -75,56 +81,103 @@ function SignalCard({ signal, index }: { signal: typeof signals[0]; index: numbe
   return (
     <motion.div
       ref={cardRef}
-      whileHover={{ y: -5, scale: 1.05 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -3, scale: 1.03 }}
+      transition={{ duration: 0.2 }}
       className="text-center"
     >
       <div
         ref={iconRef}
-        className="inline-flex p-3 rounded-full bg-primary-50 text-primary-600 mb-4 hover:bg-primary-100 transition-colors duration-300"
+        className="inline-flex p-4 rounded-full bg-white/10 border border-white/20 text-white mb-4 hover:bg-white/20 transition-all duration-200"
       >
         <signal.icon className="h-6 w-6" />
       </div>
-      <h3 className="text-sm font-semibold text-gray-900 mb-1">
+      <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-wider">
         {signal.name}
       </h3>
-      <p className="text-xs text-gray-600">{signal.description}</p>
+      <p className="text-xs text-white/70 leading-relaxed">{signal.description}</p>
     </motion.div>
   )
 }
 
 export default function TrustSignals() {
   const sectionRef = useRef<HTMLElement>(null)
+  const pressRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
-      // Background shimmer effect
-      gsap.to(sectionRef.current, {
-        backgroundPosition: '200% 0%',
-        duration: 10,
-        ease: 'none',
-        repeat: -1,
-        backgroundImage: 'linear-gradient(90deg, transparent 0%, rgba(139, 125, 101, 0.05) 50%, transparent 100%)',
-        backgroundSize: '200% 100%',
-      })
+      // Press mentions animation
+      if (pressRef.current) {
+        gsap.from(pressRef.current.children, {
+          opacity: 0,
+          y: 20,
+          duration: 0.3,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-16 lg:py-20 bg-white border-y border-gray-100 relative overflow-hidden">
-      {/* Subtle shimmer overlay */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-100/20 to-transparent animate-shimmer" />
+    <section ref={sectionRef} className="py-20 lg:py-28 bg-black text-white border-y border-white/10 relative overflow-hidden">
+      {/* Background decorative */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full mix-blend-soft-light filter blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-900/10 rounded-full mix-blend-soft-light filter blur-3xl"></div>
       </div>
+
       <div className="container-custom section-padding relative z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        {/* Trust Signals */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
           {signals.map((signal, index) => (
             <SignalCard key={signal.name} signal={signal} index={index} />
           ))}
+        </div>
+
+        {/* Press Mentions & Social Proof */}
+        <div className="border-t border-white/10 pt-12">
+          <div className="text-center mb-8">
+            <p className="text-sm uppercase tracking-widest text-white/60 mb-6">
+              As Featured In
+            </p>
+            <div ref={pressRef} className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
+              {pressMentions.map((press, index) => (
+                <motion.div
+                  key={press.name}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="px-6 py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all duration-200"
+                >
+                  <span className="text-lg font-bold text-white/80">{press.logo}</span>
+                  <p className="text-xs text-white/60 mt-1">{press.name}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Rating Display */}
+          <div className="flex flex-col items-center gap-4 mt-8">
+            <div className="flex items-center gap-2">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+            <p className="text-sm text-white/70">
+              <span className="font-bold text-white">4.9/5</span> average rating from{' '}
+              <span className="font-bold text-white">500+</span> verified reviews
+            </p>
+          </div>
         </div>
       </div>
     </section>

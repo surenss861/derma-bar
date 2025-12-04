@@ -8,14 +8,21 @@
     --font-playfair: 'Playfair Display', Georgia, serif;
   }
 
+  * {
+    @apply border-border;
+  }
+
   body {
-    @apply bg-white text-gray-900 antialiased;
+    @apply bg-black text-white antialiased;
     font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair);
-    @apply font-semibold;
+    font-family: var(--font-inter);
+    @apply font-black;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -25,26 +32,45 @@
   }
 
   .section-padding {
-    @apply px-4 sm:px-6 lg:px-8;
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
   }
 
   .container-custom {
     @apply mx-auto max-w-7xl;
+  }
+
+  .letter-spacing-wider {
+    letter-spacing: 0.3em;
+  }
+
+  /* Enhanced gradient utilities */
+  .bg-radial-gradient {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 }
 
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
-/* Shimmer animation */
+/* Enhanced Shimmer animation */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes shimmer-slow {
+  0% {
+    background-position: -300% 0;
+  }
+  100% {
+    background-position: 300% 0;
   }
 }
 
@@ -59,25 +85,111 @@ html {
   background-size: 200% 100%;
 }
 
-/* Custom scrollbar for luxury feel */
+.animate-shimmer-slow {
+  animation: shimmer-slow 12s linear infinite;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 300% 100%;
+}
+
+/* Enhanced Custom scrollbar for luxury feel */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-50;
+  @apply bg-black;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
+  @apply bg-white/20 rounded-full;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
+  @apply bg-white/30;
 }
 
-/* Animation delay utility */
+/* Selection styling */
+::selection {
+  @apply bg-white/30 text-white;
+}
+
+::-moz-selection {
+  @apply bg-white/30 text-white;
+}
+
+/* Animation delay utilities */
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animation-delay-800 {
+  animation-delay: 800ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
 .animation-delay-2000 {
-  animation-delay: 2s;
+  animation-delay: 2000ms;
+}
+
+/* Performance optimizations */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  @apply outline-2 outline-white/50 outline-offset-2;
+}
+
+/* Mobile-first touch targets - minimum 44x44px for accessibility */
+@media (max-width: 1024px) {
+  button,
+  a[role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Optimized transitions for luxury feel (200-300ms) */
+.transition-luxury {
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth scroll with offset for fixed header */
+html {
+  scroll-padding-top: 100px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
