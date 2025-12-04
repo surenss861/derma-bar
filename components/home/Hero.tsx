@@ -15,7 +15,6 @@ if (typeof window !== 'undefined') {
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
   const welcomeRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -32,15 +31,19 @@ export default function Hero() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
 
   useEffect(() => {
+    if (!sectionRef.current) return
+    
     const ctx = gsap.context(() => {
       // Background subtle animation with parallax
-      gsap.to(bgRef.current, {
-        scale: 1.08,
-        duration: 25,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-      })
+      if (bgRef.current) {
+        gsap.to(bgRef.current, {
+          scale: 1.08,
+          duration: 25,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        })
+      }
 
       // Welcome text animation with glow
       if (welcomeRef.current) {
@@ -64,40 +67,45 @@ export default function Hero() {
       }
 
       // Main title split animation with enhanced effects
-      if (titleRef.current) {
+      if (titleRef.current && typeof window !== 'undefined') {
+        // Only manipulate DOM on client side to avoid hydration issues
         const text = titleRef.current.textContent || ''
-        titleRef.current.innerHTML = text
-          .split('')
-          .map((char, i) => 
-            char === ' ' 
-              ? '<span>&nbsp;</span>'
-              : `<span class="inline-block hero-letter" style="opacity: 0; transform: translateY(60px) rotateX(90deg);">${char}</span>`
-          )
-          .join('')
+        if (text && !titleRef.current.querySelector('.hero-letter')) {
+          titleRef.current.innerHTML = text
+            .split('')
+            .map((char, i) => 
+              char === ' ' 
+                ? '<span>&nbsp;</span>'
+                : `<span class="inline-block hero-letter" style="opacity: 0; transform: translateY(60px) rotateX(90deg);">${char}</span>`
+            )
+            .join('')
 
-        const letters = titleRef.current.querySelectorAll('.hero-letter')
-        gsap.to(letters, {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 0.5,
-          stagger: {
-            amount: 0.4,
-            from: 'center',
-          },
-          ease: 'back.out(1.4)',
-          delay: 0.5,
-        })
+          const letters = titleRef.current.querySelectorAll('.hero-letter')
+          if (letters.length > 0) {
+            gsap.to(letters, {
+              opacity: 1,
+              y: 0,
+              rotateX: 0,
+              duration: 0.5,
+              stagger: {
+                amount: 0.4,
+                from: 'center',
+              },
+              ease: 'back.out(1.4)',
+              delay: 0.5,
+            })
 
-        // Add subtle glow effect to title
-        gsap.to(titleRef.current, {
-          textShadow: '0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
-          duration: 3,
-          yoyo: true,
-          repeat: -1,
-          ease: 'sine.inOut',
-          delay: 2,
-        })
+            // Add subtle glow effect to title
+            gsap.to(titleRef.current, {
+              textShadow: '0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+              duration: 3,
+              yoyo: true,
+              repeat: -1,
+              ease: 'sine.inOut',
+              delay: 2,
+            })
+          }
+        }
       }
 
       // CTA button animation with enhanced entrance
@@ -113,9 +121,10 @@ export default function Hero() {
       }
 
       // Enhanced floating particles with more variety
-      const particles = contentRef.current?.querySelectorAll('.particle')
-      if (particles) {
-        particles.forEach((particle, i) => {
+      const particlesContainer = sectionRef.current?.querySelector('.particles-container')
+      const particles = particlesContainer?.querySelectorAll('.particle')
+      if (particles && particles.length > 0) {
+        Array.from(particles).forEach((particle, i) => {
           const size = 2 + (i % 3)
           gsap.set(particle, {
             width: `${size}px`,
@@ -185,7 +194,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Enhanced floating particles */}
-      <div ref={contentRef} className="absolute inset-0 z-0 pointer-events-none">
+      <div className="particles-container absolute inset-0 z-0 pointer-events-none">
         {[...Array(12)].map((_, i) => (
           <div
             key={i}
@@ -200,7 +209,6 @@ export default function Hero() {
 
       {/* Content with enhanced styling */}
       <motion.div
-        ref={contentRef}
         style={{ y: contentY, opacity: contentOpacity }}
         className="container-custom section-padding relative z-10 text-center"
       >

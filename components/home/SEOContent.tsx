@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function SEOContent() {
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-20 lg:py-28 bg-black text-white">
       <div className="container-custom section-padding">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -14,17 +14,17 @@ export default function SEOContent() {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto prose prose-lg max-w-none"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-6 text-center uppercase tracking-tight">
             Premier Medical Aesthetics in Toronto
           </h2>
 
-          <div className="text-gray-700 space-y-6 leading-relaxed">
+          <div className="text-white/80 space-y-6 leading-relaxed">
             <p>
               <strong>Derma Bar™</strong> is a premier medical aesthetics clinic
               located in the heart of Toronto&apos;s Danforth neighborhood. We
-              specialize in expert <Link href="/services/injectables" className="text-primary-600 hover:text-primary-700 font-semibold">injectables</Link>, advanced{' '}
-              <Link href="/services/skin" className="text-primary-600 hover:text-primary-700 font-semibold">skin rejuvenation</Link>, and{' '}
-              <Link href="/services/laser" className="text-primary-600 hover:text-primary-700 font-semibold">non-surgical cosmetic treatments</Link> for all skin types.
+              specialize in expert               <Link href="/services/injectables" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60 font-semibold transition-colors">injectables</Link>, advanced{' '}
+              <Link href="/services/skin" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60 font-semibold transition-colors">skin rejuvenation</Link>, and{' '}
+              <Link href="/services/laser" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60 font-semibold transition-colors">non-surgical cosmetic treatments</Link> for all skin types.
             </p>
 
             <p>
@@ -46,28 +46,28 @@ export default function SEOContent() {
               clinical excellence.
             </p>
 
-            <div className="bg-primary-50 rounded-xl p-6 mt-8 border-l-4 border-primary-600">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6 mt-8 border-l-4 border-white/30">
+              <h3 className="text-xl font-bold text-white mb-3">
                 Our Specializations
               </h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-white/80">
                 <li>
-                  • <strong>Injectables:</strong>{' '}
-                  <Link href="/services/injectables" className="text-primary-600 hover:text-primary-700">Botox</Link>,{' '}
-                  <Link href="/services/injectables" className="text-primary-600 hover:text-primary-700">Dermal Fillers</Link>,{' '}
-                  <Link href="/services/injectables" className="text-primary-600 hover:text-primary-700">Lip Augmentation</Link>
+                  • <strong className="text-white">Injectables:</strong>{' '}
+                  <Link href="/services/injectables" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Botox</Link>,{' '}
+                  <Link href="/services/injectables" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Dermal Fillers</Link>,{' '}
+                  <Link href="/services/injectables" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Lip Augmentation</Link>
                 </li>
                 <li>
-                  • <strong>Skin Treatments:</strong>{' '}
-                  <Link href="/services/skin" className="text-primary-600 hover:text-primary-700">HydraFacial</Link>,{' '}
-                  <Link href="/services/skin" className="text-primary-600 hover:text-primary-700">Chemical Peels</Link>,{' '}
-                  <Link href="/services/skin" className="text-primary-600 hover:text-primary-700">Microneedling</Link>
+                  • <strong className="text-white">Skin Treatments:</strong>{' '}
+                  <Link href="/services/skin" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">HydraFacial</Link>,{' '}
+                  <Link href="/services/skin" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Chemical Peels</Link>,{' '}
+                  <Link href="/services/skin" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Microneedling</Link>
                 </li>
                 <li>
-                  • <strong>Laser Services:</strong>{' '}
-                  <Link href="/services/laser" className="text-primary-600 hover:text-primary-700">Laser Hair Removal</Link>,{' '}
-                  <Link href="/services/laser" className="text-primary-600 hover:text-primary-700">IPL Photofacial</Link>,{' '}
-                  <Link href="/services/laser" className="text-primary-600 hover:text-primary-700">Skin Resurfacing</Link>
+                  • <strong className="text-white">Laser Services:</strong>{' '}
+                  <Link href="/services/laser" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Laser Hair Removal</Link>,{' '}
+                  <Link href="/services/laser" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">IPL Photofacial</Link>,{' '}
+                  <Link href="/services/laser" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60">Skin Resurfacing</Link>
                 </li>
                 <li>
                   • <strong>Body Contouring:</strong> Non-invasive sculpting and
@@ -78,7 +78,7 @@ export default function SEOContent() {
 
             <p className="mt-6">
               Ready to begin your journey?{' '}
-              <Link href="/book" className="text-primary-600 hover:text-primary-700 font-semibold">
+              <Link href="/book" className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white/60 font-semibold transition-colors">
                 Book your consultation
               </Link>{' '}
               today and discover how Derma Bar™ can help you achieve your aesthetic

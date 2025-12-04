@@ -97,7 +97,7 @@ export default function BeforeAfterGallery() {
   }
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-white relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-black text-white relative overflow-hidden">
       {/* Background shimmer */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <motion.div
@@ -121,17 +121,17 @@ export default function BeforeAfterGallery() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 uppercase tracking-tight">
             Real Results, Real Transformations
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             See the difference our expert treatments make. Every client is unique,
             and so are their results.
           </p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="relative bg-gray-100 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="relative bg-black border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
             {/* Interactive Before/After Slider */}
             <AnimatePresence mode="wait">
               <motion.div
@@ -227,13 +227,13 @@ export default function BeforeAfterGallery() {
             </AnimatePresence>
 
             {/* Slide Info */}
-            <div className="bg-white p-6 border-t border-gray-200">
+            <div className="bg-black p-6 border-t border-white/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-xl font-bold text-white mb-1">
                     {transformations[currentIndex].treatment}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-white/70">
                     {transformations[currentIndex].description}
                   </p>
                 </div>
@@ -244,8 +244,8 @@ export default function BeforeAfterGallery() {
                       onClick={() => setCurrentIndex(index)}
                       className={`h-2 rounded-full transition-all ${
                         index === currentIndex
-                          ? 'w-8 bg-primary-600'
-                          : 'w-2 bg-gray-300 hover:bg-gray-400'
+                          ? 'w-8 bg-white'
+                          : 'w-2 bg-white/30 hover:bg-white/50'
                       }`}
                       aria-label={`Go to slide ${index + 1}`}
                     />
@@ -262,12 +262,12 @@ export default function BeforeAfterGallery() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-center mt-8"
           >
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-white/60 mb-4">
               Individual results may vary. Consultations required.
             </p>
             <a
               href="/gallery"
-              className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors"
+              className="inline-flex items-center text-white font-semibold hover:text-white/80 transition-colors"
             >
               View Full Gallery
               <ChevronRight className="ml-2 h-5 w-5" />
