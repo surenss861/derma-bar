@@ -84,8 +84,22 @@ export default function FounderIntro() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-20 lg:py-28 bg-white overflow-hidden">
-      <div className="container-custom section-padding">
+    <section ref={sectionRef} className="py-20 lg:py-28 bg-white overflow-hidden relative">
+      {/* Background shimmer */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-100/20 to-transparent"
+          animate={{
+            x: ['-100%', '200%'],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+      </div>
+      <div className="container-custom section-padding relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Content */}
           <motion.div
@@ -130,20 +144,46 @@ export default function FounderIntro() {
             </div>
 
             <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/about"
-                className="group inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-primary-700 hover:shadow-xl transition-all duration-300 hover:scale-105"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Learn More About Us
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/book"
-                className="group inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-gray-900 border-2 border-gray-200 hover:border-primary-300 hover:shadow-md transition-all duration-300 hover:scale-105"
+                <Link
+                  href="/about"
+                  className="group relative inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-primary-700 hover:shadow-xl transition-all duration-300 overflow-hidden"
+                >
+                  <motion.span
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    animate={{
+                      x: ['-100%', '100%'],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                      ease: 'linear',
+                    }}
+                  />
+                  <span className="relative z-10 flex items-center">
+                    Learn More About Us
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Book Consultation
-                <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-              </Link>
+                <Link
+                  href="/book"
+                  className="group relative inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-gray-900 border-2 border-gray-200 hover:border-primary-300 hover:shadow-md transition-all duration-300 overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center">
+                    Book Consultation
+                    <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  </span>
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>

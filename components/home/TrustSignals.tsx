@@ -94,9 +94,33 @@ function SignalCard({ signal, index }: { signal: typeof signals[0]; index: numbe
 }
 
 export default function TrustSignals() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+
+    const ctx = gsap.context(() => {
+      // Background shimmer effect
+      gsap.to(sectionRef.current, {
+        backgroundPosition: '200% 0%',
+        duration: 10,
+        ease: 'none',
+        repeat: -1,
+        backgroundImage: 'linear-gradient(90deg, transparent 0%, rgba(139, 125, 101, 0.05) 50%, transparent 100%)',
+        backgroundSize: '200% 100%',
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section className="py-16 lg:py-20 bg-white border-y border-gray-100">
-      <div className="container-custom section-padding">
+    <section ref={sectionRef} className="py-16 lg:py-20 bg-white border-y border-gray-100 relative overflow-hidden">
+      {/* Subtle shimmer overlay */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-100/20 to-transparent animate-shimmer" />
+      </div>
+      <div className="container-custom section-padding relative z-10">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {signals.map((signal, index) => (
             <SignalCard key={signal.name} signal={signal} index={index} />

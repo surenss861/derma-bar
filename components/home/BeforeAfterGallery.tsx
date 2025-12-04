@@ -1,9 +1,15 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const transformations = [
   {
@@ -38,18 +44,76 @@ const transformations = [
 
 export default function BeforeAfterGallery() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [sliderPosition, setSliderPosition] = useState(50)
+  const [isDragging, setIsDragging] = useState(false)
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+
+    const ctx = gsap.context(() => {
+      // Fade in section
+      gsap.from(sectionRef.current, {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % transformations.length)
+    setSliderPosition(50) // Reset slider position
   }
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + transformations.length) % transformations.length)
+    setSliderPosition(50) // Reset slider position
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !sliderRef.current) return
+    const rect = sliderRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const percentage = (x / rect.width) * 100
+    setSliderPosition(Math.max(0, Math.min(100, percentage)))
+  }
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDragging || !sliderRef.current) return
+    const rect = sliderRef.current.getBoundingClientRect()
+    const x = e.touches[0].clientX - rect.left
+    const percentage = (x / rect.width) * 100
+    setSliderPosition(Math.max(0, Math.min(100, percentage)))
   }
 
   return (
-    <section className="py-24 lg:py-32 bg-white">
-      <div className="container-custom section-padding">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-white relative overflow-hidden">
+      {/* Background shimmer */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-100/30 to-transparent"
+          animate={{
+            x: ['-100%', '200%'],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+      </div>
+
+      <div className="container-custom section-padding relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -68,72 +132,99 @@ export default function BeforeAfterGallery() {
 
         <div className="max-w-5xl mx-auto">
           <div className="relative bg-gray-100 rounded-2xl overflow-hidden shadow-2xl">
-            {/* Carousel */}
-            <div className="relative h-[500px] lg:h-[600px]">
-              {transformations.map((transformation, index) => (
-                <motion.div
-                  key={transformation.id}
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: index === currentIndex ? 1 : 0,
-                    x: index === currentIndex ? 0 : index < currentIndex ? -100 : 100,
-                  }}
-                  transition={{ duration: 0.5 }}
-                  className={`absolute inset-0 ${
-                    index === currentIndex ? 'z-10' : 'z-0'
-                  }`}
+            {/* Interactive Before/After Slider */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5 }}
+                className="relative h-[500px] lg:h-[600px]"
+              >
+                <div
+                  ref={sliderRef}
+                  className="relative h-full cursor-col-resize"
+                  onMouseMove={handleMouseMove}
+                  onMouseDown={() => setIsDragging(true)}
+                  onMouseUp={() => setIsDragging(false)}
+                  onMouseLeave={() => setIsDragging(false)}
+                  onTouchMove={handleTouchMove}
+                  onTouchStart={() => setIsDragging(true)}
+                  onTouchEnd={() => setIsDragging(false)}
                 >
-                  <div className="grid grid-cols-2 h-full">
-                    {/* Before */}
-                    <div className="relative">
-                      <Image
-                        src={transformation.before}
-                        alt={`Before ${transformation.treatment}`}
-                        fill
-                        className="object-cover"
-                        quality={90}
-                      />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <span className="text-white text-2xl font-bold uppercase tracking-wider">
-                          Before
-                        </span>
-                      </div>
+                  {/* Before Image */}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={transformations[currentIndex].before}
+                      alt={`Before ${transformations[currentIndex].treatment}`}
+                      fill
+                      className="object-cover"
+                      quality={90}
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <span className="text-white text-2xl font-bold uppercase tracking-wider">
+                        Before
+                      </span>
                     </div>
-                    {/* After */}
-                    <div className="relative">
-                      <Image
-                        src={transformation.after}
-                        alt={`After ${transformation.treatment}`}
-                        fill
-                        className="object-cover"
-                        quality={90}
-                      />
-                      <div className="absolute inset-0 bg-primary-600/40 flex items-center justify-center">
-                        <span className="text-white text-2xl font-bold uppercase tracking-wider">
-                          After
-                        </span>
+                  </div>
+
+                  {/* After Image with clip */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`,
+                    }}
+                  >
+                    <Image
+                      src={transformations[currentIndex].after}
+                      alt={`After ${transformations[currentIndex].treatment}`}
+                      fill
+                      className="object-cover"
+                      quality={90}
+                    />
+                    <div className="absolute inset-0 bg-primary-600/30 flex items-center justify-center">
+                      <span className="text-white text-2xl font-bold uppercase tracking-wider">
+                        After
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Slider Handle */}
+                  <div
+                    className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-col-resize z-20"
+                    style={{ left: `${sliderPosition}%` }}
+                  >
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center">
+                      <div className="flex gap-1">
+                        <ChevronLeft className="h-4 w-4 text-gray-600" />
+                        <ChevronRight className="h-4 w-4 text-gray-600" />
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              ))}
 
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
-                aria-label="Previous transformation"
-              >
-                <ChevronLeft className="h-6 w-6 text-gray-900" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
-                aria-label="Next transformation"
-              >
-                <ChevronRight className="h-6 w-6 text-gray-900" />
-              </button>
-            </div>
+                  {/* Navigation Arrows */}
+                  <motion.button
+                    onClick={prevSlide}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+                    aria-label="Previous transformation"
+                  >
+                    <ChevronLeft className="h-6 w-6 text-gray-900" />
+                  </motion.button>
+                  <motion.button
+                    onClick={nextSlide}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+                    aria-label="Next transformation"
+                  >
+                    <ChevronRight className="h-6 w-6 text-gray-900" />
+                  </motion.button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
 
             {/* Slide Info */}
             <div className="bg-white p-6 border-t border-gray-200">

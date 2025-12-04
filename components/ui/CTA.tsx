@@ -99,21 +99,60 @@ export default function CTA({
             {description}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href={primaryButton.href}
-              className="group inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-semibold text-gray-900 shadow-xl hover:bg-gray-50 hover:shadow-2xl hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {primaryButton.text}
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
-            </Link>
-            {secondaryButton && (
               <Link
-                href={secondaryButton.href}
-                className="group inline-flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 px-8 py-4 text-base font-semibold text-white hover:bg-white/20 hover:border-white/50 hover:scale-105 transition-all duration-300"
+                href={primaryButton.href}
+                className="group relative inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-semibold text-gray-900 shadow-xl hover:bg-gray-50 hover:shadow-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300 overflow-hidden"
               >
-                {secondaryButton.text}
-                <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                {/* Text highlight pulse */}
+                <motion.span
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  animate={{
+                    x: ['-100%', '100%'],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 2,
+                    ease: 'linear',
+                  }}
+                />
+                <span className="relative z-10 flex items-center">
+                  {primaryButton.text}
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
+                </span>
               </Link>
+            </motion.div>
+            {secondaryButton && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href={secondaryButton.href}
+                  className="group relative inline-flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 px-8 py-4 text-base font-semibold text-white hover:bg-white/20 hover:border-white/50 transition-all duration-300 overflow-hidden"
+                >
+                  {/* Subtle glow pulse */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-white/10"
+                    animate={{
+                      opacity: [0.3, 0.6, 0.3],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                  <span className="relative z-10 flex items-center">
+                    {secondaryButton.text}
+                    <ArrowRight className="ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                  </span>
+                </Link>
+              </motion.div>
             )}
           </div>
         </motion.div>

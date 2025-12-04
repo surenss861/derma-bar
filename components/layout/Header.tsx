@@ -23,7 +23,26 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
+      const isScrolled = window.scrollY > 20
+      setScrolled(isScrolled)
+      
+      // Shrink header on scroll
+      if (headerRef.current) {
+        gsap.to(headerRef.current, {
+          height: isScrolled ? '70px' : '96px',
+          duration: 0.3,
+          ease: 'power2.out',
+        })
+        
+        // Shrink logo
+        if (logoRef.current) {
+          gsap.to(logoRef.current, {
+            scale: isScrolled ? 0.85 : 1,
+            duration: 0.3,
+            ease: 'power2.out',
+          })
+        }
+      }
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -64,7 +83,7 @@ export default function Header() {
       }`}
     >
       <nav className="container-custom section-padding" aria-label="Global">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+        <div className="flex items-center justify-between" style={{ height: scrolled ? '70px' : '96px' }}>
           {/* Logo */}
           <div className="flex lg:flex-1">
             <Link ref={logoRef} href="/" className="-m-1.5 p-1.5 group">
