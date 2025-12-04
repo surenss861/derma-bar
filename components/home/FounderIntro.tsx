@@ -86,7 +86,7 @@ export default function FounderIntro() {
       // Paragraphs staggered with word-by-word reveal
       const paragraphs = paragraphsRef.current?.children
       if (paragraphs) {
-        paragraphs.forEach((para, paraIndex) => {
+        Array.from(paragraphs).forEach((para, paraIndex) => {
           gsap.from(para, {
             opacity: 0,
             y: 25,
