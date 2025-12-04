@@ -9,6 +9,7 @@ import BeforeAfterGallery from '@/components/home/BeforeAfterGallery'
 import TrainingPreview from '@/components/home/TrainingPreview'
 import FeaturedTreatments from '@/components/home/FeaturedTreatments'
 import FAQ from '@/components/ui/FAQ'
+import CTA from '@/components/ui/CTA'
 
 const homePageFAQs = [
   {
