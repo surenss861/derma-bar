@@ -14,7 +14,7 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <section className="py-24 lg:py-32 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <section className="py-24 lg:py-32 bg-black text-white relative overflow-hidden">
       <div className="container-custom section-padding">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column - Image */}
@@ -42,10 +42,10 @@ export default function FeatureSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6 uppercase tracking-tight">
               Why Choose Dermabar?
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="text-lg text-white/80 mb-8 leading-relaxed">
               Experience the perfect blend of clinical expertise and luxury care.
               Our state-of-the-art facility and expert team are dedicated to
               helping you achieve your aesthetic goals safely and effectively.
@@ -62,11 +62,11 @@ export default function FeatureSection() {
                   className="flex items-start gap-3"
                 >
                   <div className="flex-shrink-0 mt-1">
-                    <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600">
+                    <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/10 border border-white/20 text-white">
                       <Check className="h-4 w-4" />
                     </div>
                   </div>
-                  <p className="text-gray-700 font-medium">{feature}</p>
+                  <p className="text-white/90 font-medium">{feature}</p>
                 </motion.div>
               ))}
             </div>
@@ -74,13 +74,13 @@ export default function FeatureSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="/book"
-                className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-primary-700 transition-all"
+                className="inline-flex items-center justify-center rounded-lg bg-black border-2 border-white px-6 py-3 text-base font-bold text-white uppercase tracking-wider hover:bg-white hover:text-black transition-all duration-300"
               >
                 Book Consultation
               </a>
               <a
                 href="/about"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-gray-900 border-2 border-gray-200 hover:border-primary-300 transition-all"
+                className="inline-flex items-center justify-center rounded-lg bg-white/10 border-2 border-white/30 px-6 py-3 text-base font-bold text-white uppercase tracking-wider hover:bg-white/20 transition-all duration-300"
               >
                 Learn More About Us
               </a>
