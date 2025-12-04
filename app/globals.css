@@ -8,10 +8,6 @@
     --font-playfair: 'Playfair Display', Georgia, serif;
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
     @apply bg-black text-white antialiased;
     font-family: var(--font-inter);
