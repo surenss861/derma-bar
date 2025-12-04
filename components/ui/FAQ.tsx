@@ -27,9 +27,13 @@ function FAQAccordion({ item, index }: { item: FAQItem; index: number }) {
   const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!itemRef.current) return
+    
     const ctx = gsap.context(() => {
+      // Set visible first to avoid flickering
+      gsap.set(itemRef.current, { opacity: 1 })
       gsap.from(itemRef.current, {
-        opacity: 0,
+        opacity: 0.3,
         y: 20,
         duration: 0.6,
         delay: index * 0.1,
@@ -38,6 +42,7 @@ function FAQAccordion({ item, index }: { item: FAQItem; index: number }) {
           trigger: itemRef.current,
           start: 'top 85%',
           toggleActions: 'play none none none',
+          once: true, // Only play once
         },
       })
     }, itemRef)
@@ -48,7 +53,7 @@ function FAQAccordion({ item, index }: { item: FAQItem; index: number }) {
   return (
     <motion.div
       ref={itemRef}
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       className="border-b border-white/10 last:border-b-0"
@@ -96,10 +101,14 @@ export default function FAQ({ items, title = 'Frequently Asked Questions', class
   const titleRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
+    if (!sectionRef.current) return
+    
     const ctx = gsap.context(() => {
       if (titleRef.current) {
+        // Set visible first to avoid flickering
+        gsap.set(titleRef.current, { opacity: 1 })
         gsap.from(titleRef.current, {
-          opacity: 0,
+          opacity: 0.3,
           y: 30,
           duration: 0.8,
           ease: 'power2.out',
@@ -107,6 +116,7 @@ export default function FAQ({ items, title = 'Frequently Asked Questions', class
             trigger: sectionRef.current,
             start: 'top 80%',
             toggleActions: 'play none none none',
+            once: true, // Only play once
           },
         })
       }
@@ -145,10 +155,10 @@ export default function FAQ({ items, title = 'Frequently Asked Questions', class
         <div className="container-custom section-padding relative z-10">
           <motion.h2
             ref={titleRef}
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-center mb-16"
+            className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-center mb-16 text-white"
           >
             {title}
           </motion.h2>
