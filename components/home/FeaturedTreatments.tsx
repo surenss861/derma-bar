@@ -132,8 +132,10 @@ export default function FeaturedTreatments() {
   const titleRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
+    if (!sectionRef.current) return
+    
     const ctx = gsap.context(() => {
-      if (titleRef.current) {
+      if (titleRef.current && sectionRef.current) {
         gsap.from(titleRef.current, {
           opacity: 0,
           y: 40,

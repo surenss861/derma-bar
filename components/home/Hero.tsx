@@ -66,45 +66,28 @@ export default function Hero() {
         })
       }
 
-      // Main title split animation with enhanced effects
-      if (titleRef.current && typeof window !== 'undefined') {
-        // Only manipulate DOM on client side to avoid hydration issues
-        const text = titleRef.current.textContent || ''
-        if (text && !titleRef.current.querySelector('.hero-letter')) {
-          titleRef.current.innerHTML = text
-            .split('')
-            .map((char, i) => 
-              char === ' ' 
-                ? '<span>&nbsp;</span>'
-                : `<span class="inline-block hero-letter" style="opacity: 0; transform: translateY(60px) rotateX(90deg);">${char}</span>`
-            )
-            .join('')
+      // Main title animation with enhanced effects
+      if (titleRef.current) {
+        const lines = titleRef.current.querySelectorAll('span')
+        if (lines.length > 0) {
+          gsap.from(lines, {
+            opacity: 0,
+            y: 40,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'back.out(1.4)',
+            delay: 0.5,
+          })
 
-          const letters = titleRef.current.querySelectorAll('.hero-letter')
-          if (letters.length > 0) {
-            gsap.to(letters, {
-              opacity: 1,
-              y: 0,
-              rotateX: 0,
-              duration: 0.5,
-              stagger: {
-                amount: 0.4,
-                from: 'center',
-              },
-              ease: 'back.out(1.4)',
-              delay: 0.5,
-            })
-
-            // Add subtle glow effect to title
-            gsap.to(titleRef.current, {
-              textShadow: '0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
-              duration: 3,
-              yoyo: true,
-              repeat: -1,
-              ease: 'sine.inOut',
-              delay: 2,
-            })
-          }
+          // Add subtle glow effect to title
+          gsap.to(titleRef.current, {
+            textShadow: '0 0 40px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+            duration: 3,
+            yoyo: true,
+            repeat: -1,
+            ease: 'sine.inOut',
+            delay: 2,
+          })
         }
       }
 
@@ -241,7 +224,8 @@ export default function Hero() {
               letterSpacing: '-0.03em',
             }}
           >
-            DERMA BAR™
+            <span className="block">DERMA</span>
+            <span className="block">BAR™</span>
           </motion.h1>
 
           {/* Enhanced CTA Button */}
@@ -295,38 +279,6 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Enhanced Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{
-            y: [0, 12, 0],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="w-7 h-12 border-2 border-white/40 rounded-full flex justify-center cursor-pointer backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-colors"
-        >
-          <motion.div
-            className="w-1.5 h-4 bg-white/70 rounded-full mt-2.5"
-            animate={{
-              opacity: [0.4, 1, 0.4],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 1.8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

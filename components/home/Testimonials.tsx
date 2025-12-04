@@ -183,9 +183,11 @@ export default function Testimonials() {
   const ctaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!sectionRef.current) return
+    
     const ctx = gsap.context(() => {
       // Enhanced title animation
-      if (titleRef.current) {
+      if (titleRef.current && sectionRef.current) {
         gsap.from(titleRef.current, {
           opacity: 0,
           y: 50,
@@ -201,7 +203,7 @@ export default function Testimonials() {
       }
 
       // Underline animation
-      if (underlineRef.current) {
+      if (underlineRef.current && sectionRef.current) {
         gsap.from(underlineRef.current, {
           scaleX: 0,
           duration: 1,
@@ -216,7 +218,7 @@ export default function Testimonials() {
       }
 
       // Enhanced CTA animation
-      if (ctaRef.current) {
+      if (ctaRef.current && sectionRef.current) {
         gsap.from(ctaRef.current, {
           opacity: 0,
           scale: 0.92,

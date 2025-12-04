@@ -20,20 +20,24 @@ export default function FounderIntro() {
   const underlineRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!sectionRef.current) return
+    
     const ctx = gsap.context(() => {
       // Section fade in with scale
-      gsap.from(sectionRef.current, {
-        opacity: 0,
-        y: 60,
-        scale: 0.98,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
+      if (sectionRef.current) {
+        gsap.from(sectionRef.current, {
+          opacity: 0,
+          y: 60,
+          scale: 0.98,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
+      }
 
       // Welcome text animation with underline reveal
       if (welcomeRef.current) {
