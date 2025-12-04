@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X, Phone } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { gsap } from 'gsap'
 
 const navigation = [
   { name: 'Services', href: '/services' },
@@ -17,6 +18,8 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,11 +29,37 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    // Logo entrance animation
+    if (logoRef.current) {
+      gsap.from(logoRef.current, {
+        opacity: 0,
+        x: -20,
+        duration: 0.8,
+        ease: 'power3.out',
+      })
+    }
+
+    // Nav links animation
+    const navLinks = headerRef.current?.querySelectorAll('a[href^="/"]')
+    if (navLinks) {
+      gsap.from(navLinks, {
+        opacity: 0,
+        y: -10,
+        duration: 0.6,
+        stagger: 0.1,
+        delay: 0.3,
+        ease: 'power2.out',
+      })
+    }
+  }, [])
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      ref={headerRef}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-white/80 backdrop-blur-sm'
       }`}
     >
@@ -38,14 +67,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
           <div className="flex lg:flex-1">
-            <Link href="/" className="-m-1.5 p-1.5">
+            <Link ref={logoRef} href="/" className="-m-1.5 p-1.5 group">
               <span className="sr-only">Dermabar Med Spa</span>
               <Image
                 src="/Derma+Bar+Logo-156w.webp"
                 alt="Dermabar Med Spa Logo"
                 width={156}
                 height={60}
-                className="h-12 w-auto lg:h-16"
+                className="h-12 w-auto lg:h-16 transition-transform duration-300 group-hover:scale-105"
                 priority
               />
             </Link>
@@ -57,9 +86,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-all duration-300 relative group"
               >
                 {item.name}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </div>
@@ -75,7 +105,7 @@ export default function Header() {
             </a>
             <Link
               href="/book"
-              className="rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all"
+              className="rounded-full bg-primary-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 hover:shadow-lg hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-300"
             >
               Book Appointment
             </Link>

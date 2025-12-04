@@ -1,9 +1,16 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Syringe, Sparkles, Waves, Zap } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const services = [
   {
@@ -40,6 +47,71 @@ const services = [
   },
 ]
 
+interface ServiceCardProps {
+  service: typeof services[0]
+  index: number
+}
+
+function ServiceCard({ service, index }: ServiceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(cardRef.current, {
+        opacity: 0,
+        y: 50,
+        scale: 0.9,
+        rotation: -2,
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: 'back.out(1.7)',
+        scrollTrigger: {
+          trigger: cardRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      })
+    }, cardRef)
+
+    return () => ctx.revert()
+  }, [index])
+
+  return (
+    <div ref={cardRef}>
+      <Link
+        href={service.href}
+        className="group block h-full rounded-2xl bg-white overflow-hidden border border-gray-200 hover:border-primary-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+      >
+        <div className="relative h-48 overflow-hidden">
+          <Image
+            src={service.image}
+            alt={service.name}
+            fill
+            className="object-cover group-hover:scale-115 transition-transform duration-700 ease-out"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500"></div>
+          <div className={`absolute top-4 left-4 inline-flex p-3 rounded-lg ${service.color} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+            <service.icon className="h-5 w-5" />
+          </div>
+        </div>
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-300">
+            {service.name}
+          </h3>
+          <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+            {service.description}
+          </p>
+          <div className="flex items-center text-primary-600 font-medium text-sm group-hover:gap-2 transition-all duration-300">
+            Learn More
+            <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
+          </div>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
 export default function ServicesOverview() {
   return (
     <section className="py-24 lg:py-32 bg-gradient-to-b from-white to-gray-50">
@@ -62,44 +134,7 @@ export default function ServicesOverview() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {services.map((service, index) => (
-            <motion.div
-              key={service.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Link
-                href={service.href}
-                className="group block h-full rounded-2xl bg-white overflow-hidden border border-gray-200 hover:border-primary-300 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                  <div className={`absolute top-4 left-4 inline-flex p-3 rounded-lg ${service.color} shadow-lg`}>
-                    <service.icon className="h-5 w-5" />
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
-                    {service.name}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                  <div className="flex items-center text-primary-600 font-medium text-sm group-hover:gap-2 transition-all">
-                    Learn More
-                    <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
+            <ServiceCard key={service.name} service={service} index={index} />
           ))}
         </div>
 
