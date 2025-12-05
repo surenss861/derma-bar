@@ -21,8 +21,7 @@ const navigation = [
   },
   { name: 'SHOP', href: '/shop' },
   { name: 'TRAINING', href: '/training' },
-  { name: 'ABOUT', href: '/about' },
-  { name: 'REVIEWS', href: '/reviews' },
+  { name: 'NEWS', href: '/news' },
   { name: 'CONTACT', href: '/contact' },
 ]
 
@@ -93,7 +92,7 @@ export default function Header() {
       className="fixed top-0 left-0 right-0 z-50 bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
     >
       <nav className="container-custom section-padding" aria-label="Global">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+        <div className="flex items-center justify-between h-16 lg:h-20 xl:h-24">
           {/* Social Media Icons */}
           <div className="hidden lg:flex items-center gap-4">
             <motion.a
@@ -131,7 +130,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-1 flex-1 justify-center">
+          <div className="hidden lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 flex-1 justify-center">
             {navigation.map((item, index) => (
               <div
                 key={item.name}
@@ -142,7 +141,7 @@ export default function Header() {
                 {item.dropdown ? (
                   <>
                     <button
-                      className={`px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 relative group ${
+                      className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
                         isActive(item.href)
                           ? 'text-white'
                           : 'text-white/80 hover:text-white'
@@ -150,7 +149,7 @@ export default function Header() {
                     >
                       {item.name}
                       <ChevronDown
-                        className={`inline-block ml-1 h-4 w-4 transition-transform duration-300 ${
+                        className={`inline-block ml-1 h-3 w-3 xl:h-4 xl:w-4 transition-transform duration-300 ${
                           servicesDropdownOpen ? 'rotate-180' : ''
                         }`}
                       />
@@ -191,7 +190,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`px-4 py-2 text-sm font-semibold uppercase tracking-wider transition-all duration-300 relative group ${
+                    className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
                       isActive(item.href)
                         ? 'text-white'
                         : 'text-white/80 hover:text-white'
@@ -212,9 +211,9 @@ export default function Header() {
           </div>
 
           {/* Enhanced Logo - Centered */}
-          <div ref={logoRef} className="absolute left-1/2 transform -translate-x-1/2">
+          <div ref={logoRef} className="absolute left-1/2 transform -translate-x-1/2 z-10">
             <Link href="/" className="group">
-              <span className="text-xl lg:text-2xl font-black text-white tracking-tight group-hover:opacity-90 transition-all duration-300 relative">
+              <span className="text-lg lg:text-xl xl:text-2xl font-black text-white tracking-tight group-hover:opacity-90 transition-all duration-300 relative">
                 DERMA BAR™
                 <motion.span
                   className="absolute -bottom-1 left-0 h-0.5 bg-white"
@@ -227,11 +226,11 @@ export default function Header() {
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-4 ml-auto">
+          <div className="hidden lg:flex lg:items-center lg:gap-x-3 xl:gap-x-4 ml-auto">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="text-white/80 hover:text-white transition-colors"
+              className="text-white/80 hover:text-white transition-colors p-2"
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
@@ -239,7 +238,7 @@ export default function Header() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="text-white/80 hover:text-white transition-colors relative"
+              className="text-white/80 hover:text-white transition-colors relative p-2"
               aria-label="Shopping Cart"
             >
               <ShoppingCart className="h-5 w-5" />
@@ -247,7 +246,7 @@ export default function Header() {
             <motion.div whileHover={{ scale: 1.05, y: -1 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/book"
-                className="group relative inline-flex items-center justify-center bg-black px-7 py-3 text-sm font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-500 border-2 border-white/30 hover:border-white overflow-hidden"
+                className="group relative inline-flex items-center justify-center bg-black px-5 xl:px-7 py-2.5 xl:py-3 text-xs xl:text-sm font-bold text-white uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-500 border-2 border-white/30 hover:border-white overflow-hidden"
               >
                 <motion.span
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
@@ -261,7 +260,7 @@ export default function Header() {
                     ease: 'linear',
                   }}
                 />
-                <span className="relative z-10">Book Appointment</span>
+                <span className="relative z-10 whitespace-nowrap">Book Appointment</span>
               </Link>
             </motion.div>
           </div>
