@@ -267,65 +267,68 @@ export default function Header() {
               className="lg:hidden overflow-hidden border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-1">
-                {[...leftNavigation, ...rightNavigation].map((item) => (
-                  <div key={item.name}>
-                    {'dropdown' in item && item.dropdown ? (
-                      <div>
-                        <button
-                          onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
-                          className={`w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
+                {[...leftNavigation, ...rightNavigation].map((item) => {
+                  const hasDropdown = 'dropdown' in item && item.dropdown && Array.isArray(item.dropdown)
+                  return (
+                    <div key={item.name}>
+                      {hasDropdown ? (
+                        <div>
+                          <button
+                            onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
+                            className={`w-full flex items-center justify-between px-3 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
+                              isActive(item.href)
+                                ? 'text-white bg-white/5'
+                                : 'text-white/80 hover:text-white hover:bg-white/5'
+                            }`}
+                          >
+                            {item.name}
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform duration-300 ${
+                                servicesDropdownOpen ? 'rotate-180' : ''
+                              }`}
+                            />
+                          </button>
+                          <AnimatePresence>
+                            {servicesDropdownOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden pl-4 mt-1"
+                              >
+                                {('dropdown' in item && item.dropdown ? item.dropdown : []).map((subItem) => (
+                                  <Link
+                                    key={subItem.name}
+                                    href={subItem.href}
+                                    className="block py-2.5 px-3 text-sm text-white/70 hover:text-white transition-colors"
+                                    onClick={() => {
+                                      setMobileMenuOpen(false)
+                                      setServicesDropdownOpen(false)
+                                    }}
+                                  >
+                                    {subItem.name}
+                                  </Link>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={`block px-3 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
                             isActive(item.href)
                               ? 'text-white bg-white/5'
                               : 'text-white/80 hover:text-white hover:bg-white/5'
                           }`}
+                          onClick={() => setMobileMenuOpen(false)}
                         >
                           {item.name}
-                          <ChevronDown
-                            className={`h-4 w-4 transition-transform duration-300 ${
-                              servicesDropdownOpen ? 'rotate-180' : ''
-                            }`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {servicesDropdownOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden pl-4 mt-1"
-                            >
-                              {item.dropdown.map((subItem) => (
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.href}
-                                  className="block py-2.5 px-3 text-sm text-white/70 hover:text-white transition-colors"
-                                  onClick={() => {
-                                    setMobileMenuOpen(false)
-                                    setServicesDropdownOpen(false)
-                                  }}
-                                >
-                                  {subItem.name}
-                                </Link>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={`block px-3 py-2.5 text-sm font-bold uppercase tracking-wider transition-colors ${
-                          isActive(item.href)
-                            ? 'text-white bg-white/5'
-                            : 'text-white/80 hover:text-white hover:bg-white/5'
-                        }`}
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </div>
-                ))}
+                        </Link>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </motion.div>
           )}
