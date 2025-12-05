@@ -7,7 +7,11 @@ import { Menu, X, Search, ShoppingCart, ChevronDown, Facebook, Instagram } from 
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 
-const leftNavigation = [
+type NavItem = 
+  | { name: string; href: string; dropdown: Array<{ name: string; href: string }> }
+  | { name: string; href: string }
+
+const leftNavigation: NavItem[] = [
   { 
     name: 'SERVICES', 
     href: '/services',
@@ -21,7 +25,7 @@ const leftNavigation = [
   { name: 'SHOP', href: '/shop' },
 ]
 
-const rightNavigation = [
+const rightNavigation: NavItem[] = [
   { name: 'TRAINING', href: '/training' },
   { name: 'CONTACT', href: '/contact' },
 ]
@@ -267,8 +271,8 @@ export default function Header() {
               className="lg:hidden overflow-hidden border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-1">
-                {[...leftNavigation, ...rightNavigation].map((item) => {
-                  const hasDropdown = 'dropdown' in item && item.dropdown && Array.isArray(item.dropdown)
+                {([...leftNavigation, ...rightNavigation] as NavItem[]).map((item) => {
+                  const hasDropdown = 'dropdown' in item
                   return (
                     <div key={item.name}>
                       {hasDropdown ? (
@@ -289,14 +293,14 @@ export default function Header() {
                             />
                           </button>
                           <AnimatePresence>
-                            {servicesDropdownOpen && (
+                            {servicesDropdownOpen && hasDropdown && (
                               <motion.div
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 className="overflow-hidden pl-4 mt-1"
                               >
-                                {('dropdown' in item && item.dropdown ? item.dropdown : []).map((subItem) => (
+                                {item.dropdown.map((subItem) => (
                                   <Link
                                     key={subItem.name}
                                     href={subItem.href}
