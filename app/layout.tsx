@@ -3,7 +3,6 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import AnnouncementBar from '@/components/layout/AnnouncementBar'
 import StickyBookingButton from '@/components/ui/StickyBookingButton'
 
 const inter = Inter({
@@ -187,7 +186,6 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <AnnouncementBar />
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
