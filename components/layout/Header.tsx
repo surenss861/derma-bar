@@ -269,7 +269,7 @@ export default function Header() {
               <div className="px-4 py-4 space-y-1">
                 {[...leftNavigation, ...rightNavigation].map((item) => (
                   <div key={item.name}>
-                    {item.dropdown ? (
+                    {'dropdown' in item && item.dropdown ? (
                       <div>
                         <button
                           onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
