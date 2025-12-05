@@ -92,9 +92,9 @@ export default function Header() {
       className="fixed top-0 left-0 right-0 z-50 bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
     >
       <nav className="container-custom section-padding" aria-label="Global">
-        <div className="flex items-center justify-between h-16 lg:h-20 xl:h-24">
-          {/* Social Media Icons */}
-          <div className="hidden lg:flex items-center gap-4">
+        <div className="relative flex items-center justify-between h-16 lg:h-20 xl:h-24">
+          {/* Left Side - Social Media Icons */}
+          <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
             <motion.a
               href="https://facebook.com"
               target="_blank"
@@ -129,90 +129,9 @@ export default function Header() {
             </motion.a>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 flex-1 justify-center">
-            {navigation.map((item, index) => (
-              <div
-                key={item.name}
-                className="relative"
-                onMouseEnter={() => item.dropdown && setServicesDropdownOpen(true)}
-                onMouseLeave={() => item.dropdown && setServicesDropdownOpen(false)}
-              >
-                {item.dropdown ? (
-                  <>
-                    <button
-                      className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
-                        isActive(item.href)
-                          ? 'text-white'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      {item.name}
-                      <ChevronDown
-                        className={`inline-block ml-1 h-3 w-3 xl:h-4 xl:w-4 transition-transform duration-300 ${
-                          servicesDropdownOpen ? 'rotate-180' : ''
-                        }`}
-                      />
-                      <motion.span
-                        className="absolute bottom-0 left-0 h-0.5 bg-white"
-                        initial={{ width: 0 }}
-                        animate={{ width: isActive(item.href) ? '100%' : 0 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </button>
-
-                    <AnimatePresence>
-                      {servicesDropdownOpen && (
-                        <motion.div
-                          ref={dropdownRef}
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-black/95 backdrop-blur-xl rounded-lg border border-white/10 shadow-2xl overflow-hidden"
-                        >
-                          <div className="p-2">
-                            {item.dropdown.map((subItem) => (
-                              <Link
-                                key={subItem.name}
-                                href={subItem.href}
-                                className="block px-4 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
-                                onClick={() => setServicesDropdownOpen(false)}
-                              >
-                                {subItem.name}
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
-                      isActive(item.href)
-                        ? 'text-white'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    {item.name}
-                    <motion.span
-                      className="absolute bottom-0 left-0 h-0.5 bg-white"
-                      initial={{ width: 0 }}
-                      animate={{ width: isActive(item.href) ? '100%' : 0 }}
-                      whileHover={{ width: '100%' }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Enhanced Logo - Centered */}
-          <div ref={logoRef} className="absolute left-1/2 transform -translate-x-1/2 z-10">
-            <Link href="/" className="group">
+          {/* Center - Logo */}
+          <div ref={logoRef} className="absolute left-1/2 transform -translate-x-1/2 z-20 pointer-events-none">
+            <Link href="/" className="group pointer-events-auto">
               <span className="text-lg lg:text-xl xl:text-2xl font-black text-white tracking-tight group-hover:opacity-90 transition-all duration-300 relative">
                 DERMA BAR™
                 <motion.span
@@ -225,8 +144,100 @@ export default function Header() {
             </Link>
           </div>
 
+          {/* Center Navigation - Split to avoid logo */}
+          <div className="hidden lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 flex-1 justify-center">
+            {navigation.map((item, index) => {
+              // Split navigation items to avoid logo overlap
+              const navItemsBeforeLogo = navigation.slice(0, Math.ceil(navigation.length / 2))
+              const navItemsAfterLogo = navigation.slice(Math.ceil(navigation.length / 2))
+              const isBeforeLogo = index < Math.ceil(navigation.length / 2)
+              
+              return (
+                <div
+                  key={item.name}
+                  className="relative"
+                  onMouseEnter={() => item.dropdown && setServicesDropdownOpen(true)}
+                  onMouseLeave={() => item.dropdown && setServicesDropdownOpen(false)}
+                  style={{
+                    marginRight: isBeforeLogo && index === navItemsBeforeLogo.length - 1 ? '120px' : '0',
+                    marginLeft: !isBeforeLogo && index === Math.ceil(navigation.length / 2) ? '120px' : '0',
+                  }}
+                >
+                  {item.dropdown ? (
+                    <>
+                      <button
+                        className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
+                          isActive(item.href)
+                            ? 'text-white'
+                            : 'text-white/80 hover:text-white'
+                        }`}
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`inline-block ml-1 h-3 w-3 xl:h-4 xl:w-4 transition-transform duration-300 ${
+                            servicesDropdownOpen ? 'rotate-180' : ''
+                          }`}
+                        />
+                        <motion.span
+                          className="absolute bottom-0 left-0 h-0.5 bg-white"
+                          initial={{ width: 0 }}
+                          animate={{ width: isActive(item.href) ? '100%' : 0 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {servicesDropdownOpen && (
+                          <motion.div
+                            ref={dropdownRef}
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-2 w-64 bg-black/95 backdrop-blur-xl rounded-lg border border-white/10 shadow-2xl overflow-hidden"
+                          >
+                            <div className="p-2">
+                              {item.dropdown.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  href={subItem.href}
+                                  className="block px-4 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
+                                  onClick={() => setServicesDropdownOpen(false)}
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-300 relative group ${
+                        isActive(item.href)
+                          ? 'text-white'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                      <motion.span
+                        className="absolute bottom-0 left-0 h-0.5 bg-white"
+                        initial={{ width: 0 }}
+                        animate={{ width: isActive(item.href) ? '100%' : 0 }}
+                        whileHover={{ width: '100%' }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </Link>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
           {/* Right Side Actions */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-3 xl:gap-x-4 ml-auto">
+          <div className="hidden lg:flex lg:items-center lg:gap-x-3 xl:gap-x-4 flex-shrink-0">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
