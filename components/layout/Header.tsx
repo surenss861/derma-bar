@@ -7,7 +7,7 @@ import { Menu, X, Search, ShoppingCart, ChevronDown, Facebook, Instagram } from 
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 
-const navigation = [
+const leftNavigation = [
   { 
     name: 'SERVICES', 
     href: '/services',
@@ -19,8 +19,10 @@ const navigation = [
     ]
   },
   { name: 'SHOP', href: '/shop' },
+]
+
+const rightNavigation = [
   { name: 'TRAINING', href: '/training' },
-  { name: 'NEWS', href: '/news' },
   { name: 'CONTACT', href: '/contact' },
 ]
 
@@ -108,9 +110,9 @@ export default function Header() {
             </a>
           </div>
 
-          {/* Center: Navigation Links */}
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-center max-w-2xl mx-auto">
-            {navigation.map((item) => (
+          {/* Left Navigation: SERVICES, SHOP */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-end pr-32 xl:pr-40">
+            {leftNavigation.map((item) => (
               <div
                 key={item.name}
                 className="relative"
@@ -188,10 +190,30 @@ export default function Header() {
           </div>
 
           {/* Center: Logo (Desktop - Absolute) */}
-          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
-            <Link href="/" className="pointer-events-auto text-lg xl:text-xl font-black text-white tracking-tight hover:opacity-90 transition-opacity">
+          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 z-10">
+            <Link href="/" className="text-lg xl:text-xl font-black text-white tracking-tight hover:opacity-90 transition-opacity">
               DERMA BAR™
             </Link>
+          </div>
+
+          {/* Right Navigation: TRAINING, CONTACT */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-start pl-32 xl:pl-40">
+            {rightNavigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors relative group ${
+                  isActive(item.href)
+                    ? 'text-white'
+                    : 'text-white/80 hover:text-white'
+                }`}
+              >
+                {item.name}
+                <span className={`absolute bottom-0 left-0 right-0 h-0.5 bg-white transition-transform origin-left ${
+                  isActive(item.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                }`} />
+              </Link>
+            ))}
           </div>
 
           {/* Right: Actions */}
@@ -245,7 +267,7 @@ export default function Header() {
               className="lg:hidden overflow-hidden border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-1">
-                {navigation.map((item) => (
+                {[...leftNavigation, ...rightNavigation].map((item) => (
                   <div key={item.name}>
                     {item.dropdown ? (
                       <div>
