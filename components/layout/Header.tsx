@@ -116,14 +116,16 @@ export default function Header() {
 
           {/* Left Navigation: SERVICES, SHOP */}
           <div className="hidden lg:flex items-center gap-1 xl:gap-2 flex-1 justify-end pr-32 xl:pr-40">
-            {leftNavigation.map((item) => (
-              <div
-                key={item.name}
-                className="relative"
-                onMouseEnter={() => item.dropdown && setServicesDropdownOpen(true)}
-                onMouseLeave={() => item.dropdown && setServicesDropdownOpen(false)}
-              >
-                {item.dropdown ? (
+            {leftNavigation.map((item) => {
+              const hasDropdown = 'dropdown' in item
+              return (
+                <div
+                  key={item.name}
+                  className="relative"
+                  onMouseEnter={() => hasDropdown && setServicesDropdownOpen(true)}
+                  onMouseLeave={() => hasDropdown && setServicesDropdownOpen(false)}
+                >
+                  {hasDropdown ? (
                   <>
                     <button
                       className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors relative ${
@@ -142,7 +144,7 @@ export default function Header() {
                     </button>
 
                     <AnimatePresence>
-                      {servicesDropdownOpen && (
+                      {servicesDropdownOpen && hasDropdown && (
                         <motion.div
                           ref={dropdownRef}
                           initial={{ opacity: 0, y: -10 }}
@@ -167,23 +169,24 @@ export default function Header() {
                       )}
                     </AnimatePresence>
                   </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors relative group ${
-                      isActive(item.href)
-                        ? 'text-white'
-                        : 'text-white/80 hover:text-white'
-                    }`}
-                  >
-                    {item.name}
-                    <span className={`absolute bottom-0 left-0 right-0 h-0.5 bg-white transition-transform origin-left ${
-                      isActive(item.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                    }`} />
-                  </Link>
-                )}
-              </div>
-            ))}
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`px-3 xl:px-4 py-2 text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors relative group ${
+                        isActive(item.href)
+                          ? 'text-white'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                      <span className={`absolute bottom-0 left-0 right-0 h-0.5 bg-white transition-transform origin-left ${
+                        isActive(item.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                      }`} />
+                    </Link>
+                  )}
+                </div>
+              )
+            })}
           </div>
 
           {/* Center: Logo (Mobile) */}
