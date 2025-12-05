@@ -147,10 +147,8 @@ export default function Header() {
           {/* Center Navigation - Split to avoid logo */}
           <div className="hidden lg:flex lg:items-center lg:gap-x-2 xl:gap-x-4 flex-1 justify-center">
             {navigation.map((item, index) => {
-              // Split navigation items to avoid logo overlap
-              const navItemsBeforeLogo = navigation.slice(0, Math.ceil(navigation.length / 2))
-              const navItemsAfterLogo = navigation.slice(Math.ceil(navigation.length / 2))
-              const isBeforeLogo = index < Math.ceil(navigation.length / 2)
+              // Add spacing around logo area (items 2 and 3 need extra space)
+              const isNearLogo = index === 1 || index === 2
               
               return (
                 <div
@@ -159,8 +157,8 @@ export default function Header() {
                   onMouseEnter={() => item.dropdown && setServicesDropdownOpen(true)}
                   onMouseLeave={() => item.dropdown && setServicesDropdownOpen(false)}
                   style={{
-                    marginRight: isBeforeLogo && index === navItemsBeforeLogo.length - 1 ? '120px' : '0',
-                    marginLeft: !isBeforeLogo && index === Math.ceil(navigation.length / 2) ? '120px' : '0',
+                    marginRight: index === 1 ? '140px' : '0',
+                    marginLeft: index === 2 ? '140px' : '0',
                   }}
                 >
                   {item.dropdown ? (
